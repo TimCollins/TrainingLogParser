@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainingLogParser.Tests", "src\TrainingLogParser.Tests\TrainingLogParser.Tests.csproj", "{874CA989-1927-4D7B-A11A-8AB53FE23400}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainingLogParser.Domain", "TrainingLogParser.Domain\TrainingLogParser.Domain.csproj", "{E0B20C52-5BE8-4750-8FBB-E449C1F280FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{874CA989-1927-4D7B-A11A-8AB53FE23400}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{874CA989-1927-4D7B-A11A-8AB53FE23400}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{874CA989-1927-4D7B-A11A-8AB53FE23400}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0B20C52-5BE8-4750-8FBB-E449C1F280FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0B20C52-5BE8-4750-8FBB-E449C1F280FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0B20C52-5BE8-4750-8FBB-E449C1F280FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0B20C52-5BE8-4750-8FBB-E449C1F280FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
