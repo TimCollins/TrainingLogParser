@@ -1,4 +1,4 @@
-﻿namespace TrainingLogParser.Domain.Model
+﻿namespace TrainingLogParser.Domain
 {
     public class TrainingLogEntry
     {

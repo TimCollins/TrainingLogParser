@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainingLogParser.Tests", "src\TrainingLogParser.Tests\TrainingLogParser.Tests.csproj", "{874CA989-1927-4D7B-A11A-8AB53FE23400}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainingLogParser.Tests", "src\TrainingLogParser.Tests\TrainingLogParser.Tests.csproj", "{874CA989-1927-4D7B-A11A-8AB53FE23400}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainingLogParser.Domain", "TrainingLogParser.Domain\TrainingLogParser.Domain.csproj", "{E0B20C52-5BE8-4750-8FBB-E449C1F280FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainingLogParser.Domain", "TrainingLogParser.Domain\TrainingLogParser.Domain.csproj", "{E0B20C52-5BE8-4750-8FBB-E449C1F280FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainingLogParser.Logic", "src\TrainingLogParser.Logic\TrainingLogParser.Logic.csproj", "{8ECC092C-D2EB-4D2C-A75C-1A7296951CD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{E0B20C52-5BE8-4750-8FBB-E449C1F280FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0B20C52-5BE8-4750-8FBB-E449C1F280FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0B20C52-5BE8-4750-8FBB-E449C1F280FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ECC092C-D2EB-4D2C-A75C-1A7296951CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ECC092C-D2EB-4D2C-A75C-1A7296951CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ECC092C-D2EB-4D2C-A75C-1A7296951CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ECC092C-D2EB-4D2C-A75C-1A7296951CD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
