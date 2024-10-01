@@ -2,6 +2,7 @@
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Globalization;
 using TrainingLogParser.Domain.Model;
@@ -17,7 +18,7 @@ namespace TrainingLogParser.Tests
 
         public ParserTests(TestFixture fixture)
         {
-            _mediator = fixture.Container.GetInstance<IMediator>();
+            _mediator = fixture.ServiceProvider.GetService<IMediator>();
         }
 
         [Fact]
