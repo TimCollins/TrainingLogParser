@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\TrainingLogParser.Domain\TrainingLogParser.Domain.csproj" />
+    <ProjectReference Include="..\TrainingLogParser.Domain\TrainingLogParser.Domain.csproj" />
     <ProjectReference Include="..\TrainingLogParser.Logic\TrainingLogParser.Logic.csproj" />
   </ItemGroup>
 
