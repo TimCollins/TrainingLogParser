@@ -1,15 +1,25 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
+using MediatR;
 using Shouldly;
 using System.Globalization;
 using TrainingLogParser.Domain.Model;
+using TrainingLogParser.Logic.Command;
+using TrainingLogParser.Tests.Infrastructure;
 using Xunit;
 
 namespace TrainingLogParser.Tests
 {
-    public class ParserTests
+    public class ParserTests : IClassFixture<TestFixture>
     {
+        private readonly IMediator _mediator;
+
+        public ParserTests(TestFixture fixture)
+        {
+            _mediator = fixture.Container.GetInstance<IMediator>();
+        }
+
         [Fact]
         public void CanReadCsvFile()
         {
@@ -46,6 +56,18 @@ namespace TrainingLogParser.Tests
             first.Weight.ShouldBe(131);
         }
 
+        [Fact]
+        public async Task CanCallCommand()
+        {   
+            var request = new ParseTrainingLogCommand
+            {
+                Filename = Path.Combine(AppContext.BaseDirectory, "TestData", "simple.csv")
+            };
+
+            var res = await _mediator.Send(request);
+
+            res.ShouldNotBeNull();
+        }
     }
 
     public class CustomDateTimeOffsetConverter : DefaultTypeConverter
