@@ -1,6 +1,6 @@
-﻿using CsvHelper.Configuration;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
-using CsvHelper;
 using System.Globalization;
 
 namespace TrainingLogParser.Logic.Converters

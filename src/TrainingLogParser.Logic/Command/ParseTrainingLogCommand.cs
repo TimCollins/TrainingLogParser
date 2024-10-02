@@ -18,15 +18,17 @@ namespace TrainingLogParser.Logic.Command
         {
             // TODO: Add check for missing/null filename
 
+            var options = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                IgnoreBlankLines = true,
+                ShouldSkipRecord = args => args.Row.Parser.Record.All(string.IsNullOrWhiteSpace)
+            };
+
             using (var reader = new StreamReader(request.Filename))
             {
-                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                using (var csv = new CsvReader(reader, options))
                 {
-                    var options = new CsvConfiguration(CultureInfo.InvariantCulture)
-                    {
-                        PrepareHeaderForMatch = args => args.Header.ToLower(),
-                    };
-
                     csv.Context.TypeConverterCache.AddConverter<DateTimeOffset>(new CustomDateTimeOffsetConverter());
 
                     var records = csv.GetRecords<TrainingLogEntry>().ToList();

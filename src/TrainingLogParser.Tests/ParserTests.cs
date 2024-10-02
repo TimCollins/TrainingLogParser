@@ -17,12 +17,9 @@ namespace TrainingLogParser.Tests
         }
 
         [Fact]
-        public async Task CanCallCommand()
+        public async Task GivenSimpleLinesOfData_RowsParsedSuccessfully()
         {
-            var request = new ParseTrainingLogCommand
-            {
-                Filename = Path.Combine(AppContext.BaseDirectory, "TestData", "simple.csv")
-            };
+            var request = GetParseRequest("simple.csv");
 
             var res = await _mediator.Send(request);
 
@@ -38,6 +35,25 @@ namespace TrainingLogParser.Tests
             first.Notes.ShouldBe("Top set");
             first.Reps.ShouldBe(5);
             first.Weight.ShouldBe(131);
+        }
+
+        [Fact]
+        public async Task GivenMultipleDaysOfData_RowsParsedSuccessfully()
+        {
+            var request = GetParseRequest("multiple-days.csv");
+
+            var res = await _mediator.Send(request);
+
+            res.ShouldNotBeNull();
+            res.Count.ShouldBe(23);
+        }
+
+        private ParseTrainingLogCommand GetParseRequest(string filename)
+        {
+            return new ParseTrainingLogCommand
+            {
+                Filename = Path.Combine(AppContext.BaseDirectory, "TestData", filename)
+            };
         }
     }
 }
