@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SimpleInjector;
 using TrainingLogParser.Logic.Command;
+using TrainingLogParser.Repo.Implementation;
+using TrainingLogParser.Repo.Interfaces;
 
 namespace TrainingLogParser.Tests.Infrastructure
 {
     public class TestFixture
     {
-        public Container Container { get; private set; }
         public ServiceProvider ServiceProvider;
 
         public TestFixture()
@@ -17,6 +17,8 @@ namespace TrainingLogParser.Tests.Infrastructure
             {
                 cfg.RegisterServicesFromAssembly(typeof(ParseTrainingLogCommand).Assembly);
             });
+
+            services.AddTransient<ITrainingLogEntryRepo, TrainingLogEntryRepo>();
 
             ServiceProvider = services.BuildServiceProvider();
         }

@@ -3,7 +3,9 @@ using CsvHelper.Configuration;
 using MediatR;
 using System.Globalization;
 using TrainingLogParser.Domain.Model;
+using TrainingLogParser.Logic.ClassMaps;
 using TrainingLogParser.Logic.Converters;
+using TrainingLogParser.Repo.Interfaces;
 
 namespace TrainingLogParser.Logic.Command
 {
@@ -14,6 +16,13 @@ namespace TrainingLogParser.Logic.Command
 
     public class ParseTrainingLogHandler : IRequestHandler<ParseTrainingLogCommand, List<TrainingLogEntry>>
     {
+        public ITrainingLogEntryRepo _trainingLogEntryRepo { get; set; }
+
+        public ParseTrainingLogHandler(ITrainingLogEntryRepo trainingLogEntryRepo)
+        {
+            _trainingLogEntryRepo = trainingLogEntryRepo;
+        }
+
         public Task<List<TrainingLogEntry>> Handle(ParseTrainingLogCommand request, CancellationToken cancellationToken)
         {
             // TODO: Add check for missing/null filename
@@ -30,6 +39,7 @@ namespace TrainingLogParser.Logic.Command
                 using (var csv = new CsvReader(reader, options))
                 {
                     csv.Context.TypeConverterCache.AddConverter<DateTimeOffset>(new CustomDateTimeOffsetConverter());
+                    csv.Context.RegisterClassMap<TrainingLogEntryClassMap>();
 
                     var records = csv.GetRecords<TrainingLogEntry>().ToList();
 
