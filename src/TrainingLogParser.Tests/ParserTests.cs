@@ -43,7 +43,9 @@ namespace TrainingLogParser.Tests
         [Fact]
         public async Task GivenMultipleDaysOfData_RowsParsedAndWrittenToDatabaseSuccessfully()
         {
-            var entries = await GetMultipleDayData();
+            const string fileName = "multiple-days.csv";
+
+            var entries = await GetEntriesForFile(fileName);
 
             entries.ShouldNotBeNull();
             entries.Count.ShouldBe(23);
@@ -98,9 +100,29 @@ namespace TrainingLogParser.Tests
             }
         }
 
-        private async Task<List<TrainingLogEntry>> GetMultipleDayData()
+        [Fact]
+        public async Task GivenExerciseWithNoWeight_RowsParsedSuccessfully()
         {
-            var request = GetParseRequest("multiple-days.csv");
+            const string fileName = "no-weight.csv";
+
+            var entries = await GetEntriesForFile(fileName);
+
+            entries.ShouldNotBeNull();
+        }
+
+        [Fact]
+        public async Task GivenFullCsvOfData_RowsParsedAndWrittenToDatabaseSuccessfully()
+        {
+            const string fileName = "full.csv";
+
+            var entries = await GetEntriesForFile(fileName);
+
+            entries.ShouldNotBeNull();
+        }
+
+        private async Task<List<TrainingLogEntry>> GetEntriesForFile(string fileName)
+        {
+            var request = GetParseRequest(fileName);
 
             var res = await _mediator.Send(request);
 
