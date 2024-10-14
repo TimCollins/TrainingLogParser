@@ -22,14 +22,14 @@ namespace TrainingLogParser.Tests
         [Fact]
         public async Task GivenSimpleLinesOfData_RowsParsedSuccessfully()
         {
-            var request = GetParseRequest("simple.csv");
+            const string fileName = "simple.csv";
 
-            var res = await _mediator.Send(request);
+            var entries = await GetEntriesForFile(fileName);
 
-            res.ShouldNotBeNull();
+            entries.ShouldNotBeNull();
 
-            res.Count.ShouldBe(2);
-            var first = res.First();
+            entries.Count.ShouldBe(2);
+            var first = entries.First();
 
             var dateOnly = new DateTime(2024, 9, 29);
             var expectedDate = new DateTimeOffset(dateOnly);
