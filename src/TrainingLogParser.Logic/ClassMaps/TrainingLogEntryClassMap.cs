@@ -10,6 +10,7 @@ namespace TrainingLogParser.Logic.ClassMaps
         {
             AutoMap(CultureInfo.InvariantCulture);
             Map(m => m.Id).Ignore();
+            Map(m => m.DateOffset).Ignore();
         }
     }
 }
