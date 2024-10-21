@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TrainingLogParser.Domain;
 using TrainingLogParser.Domain.Model;
 using TrainingLogParser.Repo.Interfaces;
 
@@ -42,18 +43,20 @@ namespace TrainingLogParser.Logic.Command
                 // which SHOULD have a date
                 if (currentDate == null)
                 {
-                    currentDate = entry.Date;
+                    currentDate = DateTimeOffset.Parse(entry.Date);
+                    entry.Date = DateTimeOffset.Parse(entry.Date).ToString(TrainingLogParserConstants.IsoDateFormat);
                 }
 
                 // Set current date for entries which don't have a date 
-                if (entry.Date == null)
+                if (string.IsNullOrEmpty(entry.Date))
                 {
-                    entry.Date = currentDate;
+                    entry.Date = currentDate.Value.ToString(TrainingLogParserConstants.IsoDateFormat);
                 }
-                else if (currentDate != entry.Date)
+                else if (currentDate != DateTimeOffset.Parse(entry.Date))
                 {
                     // When the date changes the new date should be set to currentDate
-                    currentDate = entry.Date;
+                    currentDate = DateTimeOffset.Parse(entry.Date);
+                    entry.Date = DateTimeOffset.Parse(entry.Date).ToString(TrainingLogParserConstants.IsoDateFormat);
                 }
 
                 sanitised.Add(entry);

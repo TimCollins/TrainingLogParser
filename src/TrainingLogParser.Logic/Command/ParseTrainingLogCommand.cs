@@ -16,7 +16,7 @@ namespace TrainingLogParser.Logic.Command
 
     public class ParseTrainingLogHandler : IRequestHandler<ParseTrainingLogCommand, List<TrainingLogEntry>>
     {
-        public ITrainingLogEntryRepo _trainingLogEntryRepo { get; set; }
+        private readonly ITrainingLogEntryRepo _trainingLogEntryRepo;
 
         public ParseTrainingLogHandler(ITrainingLogEntryRepo trainingLogEntryRepo)
         {
