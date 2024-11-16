@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
 using System.Data.SQLite;
+using System.Text;
+using TrainingLogParser.Domain;
 using TrainingLogParser.Domain.Model;
 using TrainingLogParser.Repo.Interfaces;
 
@@ -84,6 +86,47 @@ namespace TrainingLogParser.Repo.Implementation
             {
                 connection.Open();
                 var res = await connection.QuerySingleAsync<TrainingLogEntry>(query, parameters);
+
+                return res;
+            }
+        }
+
+        public async Task<IEnumerable<TrainingLogEntry>> GetBarbellExercisePRSummaryQuery()
+        {
+            var queryPart = "SELECT * FROM ( " +
+                "SELECT * FROM TrainingLogEntry " +
+                "WHERE Exercise = '{0}' " +
+                "ORDER BY Weight DESC " +
+                "LIMIT 1 )";
+
+            var exercises = new List<string>
+            {
+                TrainingLogParserConstants.Exercises.BackSquat,
+                TrainingLogParserConstants.Exercises.BenchPress,
+                TrainingLogParserConstants.Exercises.Deadlift,
+                TrainingLogParserConstants.Exercises.OverheadPress
+            };
+
+            var query = new StringBuilder();
+
+            for (var i = 0; i < exercises.Count; i++)
+            {
+                var exercise = exercises[i];
+
+                query.Append(string.Format(queryPart, exercise));
+
+                var isNotLast = i < exercises.Count - 1;
+
+                if (isNotLast)
+                {
+                    query.Append(" UNION ALL ");
+                }
+            }
+
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+                var res = await connection.QueryAsync<TrainingLogEntry>(query.ToString());
 
                 return res;
             }

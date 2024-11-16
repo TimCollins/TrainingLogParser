@@ -6,6 +6,7 @@ namespace TrainingLogParser.Repo.Interfaces
     {
         Task Create(TrainingLogEntry entry);
         Task DeleteEntriesForDate(DateTimeOffset date);
+        Task<IEnumerable<TrainingLogEntry>> GetBarbellExercisePRSummaryQuery();
         Task<IEnumerable<TrainingLogEntry>> GetEntriesForDate(DateTimeOffset date);
         Task<TrainingLogEntry> GetHeaviestSetForExercise(string v);
     }
