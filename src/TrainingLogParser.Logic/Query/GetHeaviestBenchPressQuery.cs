@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TrainingLogParser.Domain;
 using TrainingLogParser.Domain.Model;
 using TrainingLogParser.Repo.Interfaces;
 
@@ -19,7 +20,7 @@ namespace TrainingLogParser.Logic.Query
 
         public async Task<TrainingLogEntry> Handle(GetHeaviestBenchPressQuery request, CancellationToken cancellationToken)
         {
-            var res = await _trainingLogEntryRepo.GetHeaviestSetForExercise("Bench Press");
+            var res = await _trainingLogEntryRepo.GetHeaviestSetForExercise(TrainingLogParserConstants.Exercises.BenchPress);
 
             return res;
         }
