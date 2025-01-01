@@ -72,8 +72,8 @@ namespace TrainingLogParser.Tests
             entries.ShouldNotBeNull();
         }
 
-        //[Fact(Skip = "Takes 40 seconds to run")]
-        [Fact]
+        [Fact(Skip = "Takes 40 seconds to run")]
+        //[Fact]
         public async Task GivenFullCsvOfData_RowsParsedAndWrittenToDatabaseSuccessfully()
         {
             const string fileName = "full.csv";
@@ -104,6 +104,37 @@ namespace TrainingLogParser.Tests
             // Check against the CSV for the correct data
             res.Weight.ShouldBe(105);
             res.Reps.ShouldBe(6);
+        }
+
+        [Fact]
+        public async Task GivenDataInDatabase_CanDeleteDataForAGivenDay()
+        {
+            const string fileName = "multiple-days.csv";
+
+            var res = await SaveToDatabase(fileName);
+            res.ShouldBe(Unit.Value);
+
+            var dateOnly = new DateTime(2024, 10, 1);
+            var expectedDate = new DateTimeOffset(dateOnly);
+
+            var query = new RetrieveTrainingLogEntriesByDateQuery
+            {
+                Date = expectedDate
+            };
+            var retrievedEntries = await _mediator.Send(query);
+
+            // Assert the saved data based on the content of the original CSV
+            retrievedEntries.Count().ShouldBe(12);
+
+            var deleteCommand = new DeleteTrainingLogEntriesByDateCommand
+            {
+                Date = expectedDate
+            };
+
+            await _mediator.Send(deleteCommand);
+
+            retrievedEntries = await _mediator.Send(query);
+            retrievedEntries.Count().ShouldBe(0);
         }
         
         #region Helpers

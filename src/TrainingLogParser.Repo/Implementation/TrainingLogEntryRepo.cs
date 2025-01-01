@@ -38,11 +38,9 @@ namespace TrainingLogParser.Repo.Implementation
             var query = "SELECT Exercise, Weight, Reps FROM TrainingLogEntry " +
                 "WHERE Date = @date";
 
-            var dateParam = inputDate.ToSqliteDateFormat();
-
             var parameters = new
             {
-                date = dateParam
+                date = inputDate.ToSqliteDateFormat()
             };
 
             using (var connection = new SQLiteConnection(_connectionString))
@@ -56,10 +54,10 @@ namespace TrainingLogParser.Repo.Implementation
         {
             var query = "DELETE FROM TrainingLogEntry " +
                 "WHERE Date = @date";
+            
             var parameters = new
             {
-                // Needs to be in this format: '01/10/2024 00:00:00 +01:00'
-                date = inputDate.ToString()
+                date = inputDate.ToSqliteDateFormat()
             };
 
             using (var connection = new SQLiteConnection(_connectionString))
