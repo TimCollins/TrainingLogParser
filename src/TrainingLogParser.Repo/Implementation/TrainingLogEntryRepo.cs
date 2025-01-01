@@ -35,15 +35,14 @@ namespace TrainingLogParser.Repo.Implementation
 
         public async Task<IEnumerable<TrainingLogEntry>> GetEntriesForDate(DateTimeOffset inputDate)
         {
-            // TODO: Fix this exception when including the date column
-            //System.Data.DataException : Error parsing column 1(Date = 01/10/2024 00:00:00 + 01:00 - String)
-            //---- System.InvalidCastException : Invalid cast from 'System.String' to 'System.DateTimeOffset'.
             var query = "SELECT Exercise, Weight, Reps FROM TrainingLogEntry " +
                 "WHERE Date = @date";
+
+            var dateParam = inputDate.ToSqliteDateFormat();
+
             var parameters = new
             {
-                // Needs to be in this format: '01/10/2024 00:00:00 +01:00'
-                date = inputDate.ToString()
+                date = dateParam
             };
 
             using (var connection = new SQLiteConnection(_connectionString))
@@ -129,6 +128,17 @@ namespace TrainingLogParser.Repo.Implementation
                 var res = await connection.QueryAsync<TrainingLogEntry>(query.ToString());
 
                 return res;
+            }
+        }
+
+        public async Task DeleteAllEntries()
+        {
+            var query = "DELETE FROM TrainingLogEntry";
+
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+                await connection.ExecuteAsync(query);
             }
         }
     }
