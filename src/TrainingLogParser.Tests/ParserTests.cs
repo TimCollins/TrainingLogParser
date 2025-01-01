@@ -136,7 +136,17 @@ namespace TrainingLogParser.Tests
             retrievedEntries = await _mediator.Send(query);
             retrievedEntries.Count().ShouldBe(0);
         }
-        
+
+        [Fact]
+        public async Task GivenMultipleDaysOfData_RowsParsedAndWrittenToJsonSuccessfully()
+        {
+            const string fileName = "multiple-days.csv";
+
+            var res = await SaveToJsonString(fileName);
+
+            res.ShouldNotBeNullOrEmpty();
+        }
+
         #region Helpers
         private async Task<List<TrainingLogEntry>> GetEntriesForFile(string fileName)
         {
@@ -160,6 +170,20 @@ namespace TrainingLogParser.Tests
             var entries = await GetEntriesForFile(fileName);
 
             var saveCmd = new SaveTrainingLogEntriesCommand
+            {
+                Entries = entries
+            };
+
+            var res = await _mediator.Send(saveCmd);
+
+            return res;
+        }
+
+        private async Task<string> SaveToJsonString(string fileName)
+        {
+            var entries = await GetEntriesForFile(fileName);
+
+            var saveCmd = new SaveTrainingLogEntriesToJsonCommand
             {
                 Entries = entries
             };

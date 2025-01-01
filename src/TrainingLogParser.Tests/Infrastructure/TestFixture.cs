@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TrainingLogParser.Logic.Command;
+using TrainingLogParser.Logic.Services.Impl;
+using TrainingLogParser.Logic.Services.Interfaces;
 using TrainingLogParser.Repo.Implementation;
 using TrainingLogParser.Repo.Interfaces;
 
@@ -19,6 +21,7 @@ namespace TrainingLogParser.Tests.Infrastructure
             });
 
             services.AddTransient<ITrainingLogEntryRepo, TrainingLogEntryRepo>();
+            services.AddTransient<ITrainingLogParserService, TrainingLogParserService>();
 
             ServiceProvider = services.BuildServiceProvider();
         }

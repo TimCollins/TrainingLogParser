@@ -5,7 +5,6 @@ using System.Globalization;
 using TrainingLogParser.Domain.Model;
 using TrainingLogParser.Logic.ClassMaps;
 using TrainingLogParser.Logic.Converters;
-using TrainingLogParser.Repo.Interfaces;
 
 namespace TrainingLogParser.Logic.Command
 {
@@ -16,11 +15,8 @@ namespace TrainingLogParser.Logic.Command
 
     public class ParseTrainingLogHandler : IRequestHandler<ParseTrainingLogCommand, List<TrainingLogEntry>>
     {
-        private readonly ITrainingLogEntryRepo _trainingLogEntryRepo;
-
-        public ParseTrainingLogHandler(ITrainingLogEntryRepo trainingLogEntryRepo)
+        public ParseTrainingLogHandler()
         {
-            _trainingLogEntryRepo = trainingLogEntryRepo;
         }
 
         public Task<List<TrainingLogEntry>> Handle(ParseTrainingLogCommand request, CancellationToken cancellationToken)
