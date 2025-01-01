@@ -11,7 +11,7 @@ using Xunit;
 
 namespace TrainingLogParser.Tests
 {
-    public class ParserTests : IClassFixture<TestFixture>
+    public class ParserTests : IClassFixture<TestFixture>, IDisposable
     {
         private readonly IMediator _mediator;
 
@@ -49,7 +49,6 @@ namespace TrainingLogParser.Tests
             var res = await SaveToDatabase(fileName);
             res.ShouldBe(Unit.Value);
 
-            // Retrieve data for a given date
             var dateOnly = new DateTime(2024, 10, 1);
             var expectedDate = new DateTimeOffset(dateOnly);
 
@@ -61,16 +60,6 @@ namespace TrainingLogParser.Tests
 
             // Assert the saved data based on the content of the original CSV
             retrievedEntries.Count().ShouldBe(12);
-
-            // Delete data for given dates per CSV content
-            // TODO: Move this to a Dispose method to avoid duplication
-            var dates = new List<string>
-            {
-                "2024-09-29T00:00:00.000+01:00",
-                "2024-10-01T00:00:00.000+01:00"
-            };
-
-            await DeleteRowsForDates(dates);
         }
 
         [Fact]
@@ -83,6 +72,7 @@ namespace TrainingLogParser.Tests
             entries.ShouldNotBeNull();
         }
 
+        //[Fact(Skip = "Takes 40 seconds to run")]
         [Fact]
         public async Task GivenFullCsvOfData_RowsParsedAndWrittenToDatabaseSuccessfully()
         {
@@ -114,16 +104,9 @@ namespace TrainingLogParser.Tests
             // Check against the CSV for the correct data
             res.Weight.ShouldBe(105);
             res.Reps.ShouldBe(6);
-
-            var dates = new List<string>
-            {
-                "2024-09-29T00:00:00.000+01:00",
-                "2024-10-01T00:00:00.000+01:00"
-            };
-
-            await DeleteRowsForDates(dates);
         }
-
+        
+        #region Helpers
         private async Task<List<TrainingLogEntry>> GetEntriesForFile(string fileName)
         {
             var request = GetParseRequest(fileName);
@@ -141,29 +124,6 @@ namespace TrainingLogParser.Tests
             };
         }
 
-        private async Task DeleteRowsForDates(List<string> dates)
-        {
-            foreach (var inputDate in dates)
-            {
-                var dateTimeOffset = DateTimeOffset.ParseExact(inputDate, TrainingLogParserConstants.IsoDateFormat, CultureInfo.InvariantCulture);
-
-                var command = new DeleteTrainingLogEntriesByDateCommand
-                {
-                    Date = dateTimeOffset
-                };
-
-                await _mediator.Send(command);
-
-                var query = new RetrieveTrainingLogEntriesByDateQuery
-                {
-                    Date = dateTimeOffset
-                };
-
-                var retrievedEntries = await _mediator.Send(query);
-                retrievedEntries.Count().ShouldBe(0);
-            }
-        }
-
         private async Task<Unit> SaveToDatabase(string fileName)
         {
             var entries = await GetEntriesForFile(fileName);
@@ -177,5 +137,14 @@ namespace TrainingLogParser.Tests
 
             return res;
         }
+        #endregion
+
+        #region Dispose
+        public void Dispose()
+        {
+            var clearDatabaseCommand = new ClearTrainingLogDatabaseCommand();
+            Task.Run(async () => await _mediator.Send(clearDatabaseCommand)).Wait();
+        }
+        #endregion
     }
 }
