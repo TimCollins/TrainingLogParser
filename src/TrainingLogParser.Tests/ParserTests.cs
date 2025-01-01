@@ -35,7 +35,7 @@ namespace TrainingLogParser.Tests
             var dateOnly = new DateTime(2024, 9, 29);
             var expectedDate = new DateTimeOffset(dateOnly);
 
-            //first.Date.ShouldBe(expectedDate);
+            first.DateOffset.Date.ShouldBe(expectedDate.Date);
             first.Notes.ShouldBe("Top set");
             first.Reps.ShouldBe(5);
             first.Weight.ShouldBe(131);
